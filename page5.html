@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page 4 - Crochet Updates</title>
+  <style>
+    body {
+      background-color: beige;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: pink;
+    }
+    .message-box {
+      background-color: #ffe4e1;
+      border: 2px solid hotpink;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 10px;
+      text-align: left;
+      position: relative;
+      transition: background-color 0.5s ease;
+    }
+    .new-message {
+      background-color: hotpink;
+      color: white;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-bottom: 10px;
+      animation: flash 1s ease-in-out infinite;
+    }
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .read-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 5px;
+      border: 1px solid red;
+      background-color: white;
+      color: red;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .read-btn:hover {
+      background-color: red;
+      color: white;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid hotpink;
+      background-color: white;
+      color: hotpink;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: hotpink;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .comment-section {
+      margin-top: 20px;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #fff0f5;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid hotpink;
+    }
+    .comment {
+      background-color: #ffe4e1;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      position: relative;
+    }
+    .comment input, .comment textarea {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid hotpink;
+    }
+    .comment button {
+      width: 100%;
+      padding: 10px;
+      background-color: hotpink;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .comment button:hover {
+      background-color: deeppink;
+    }
+    .reply-box {
+      margin-top: 10px;
+      margin-left: 20px;
+    }
+    .reply {
+      background-color: #ffd6e0;
+      padding: 8px;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Things to Crochet</h1>
+
+  <button id="mark-all">Mark All as Read</button>
+
+  <div class="message-box">
+    <div class="new-message">New Message</div>
+    <p>
+      Today I added a new crochet idea: cute granny squares! Make small colorful squares and stitch them together for blankets, bags, or pillow covers. Add your own flair with patterns and colors.
+    </p>
+    <button class="read-btn">Mark as Read</button>
+  </div>
+
+  <div class="message-box">
+    <div class="new-message">New Message</div>
+    <p>
+      Another idea: Crochet cozy amigurumi animals. Perfect little gifts for friends or just to decorate your room!
+    </p>
+    <button class="read-btn">Mark as Read</button>
+  </div>
+
+  <div class="message-box">
+    <div class="new-message">New Message</div>
+    <p>
+      Just saying if you're looking for a new autumn vibes project the color combo beige and off white is great and warm! Ultimate duo.
+    </p>
+    <button class="read-btn">Mark as Read</button>
+  </div>
+
+  <div class="message-box">
+    <div class="new-message">New Message</div>
+    <p>
+      New video coming soon! Stay tuned.
+    </p>
+    <button class="read-btn">Mark as Read</button>
+  </div>
+
+  <!-- Comment Section -->
+  <div class="comment-section">
+    <h2>Leave a Comment</h2>
+    <div class="comment">
+      <input type="text" id="name" placeholder="Your Name">
+      <textarea id="comment" placeholder="Your Comment"></textarea>
+      <button id="submit-comment">Submit Comment</button>
+    </div>
+    <div id="comments-container"></div>
+  </div>
+
+  <a href="page4.html"><button>Back to page 4</button></a>
+  <a href="page6.html"><button>Go to Page 6</button></a>
+
+  <script>
+    function markMessageRead(messageBox, button) {
+      const newMsg = messageBox.querySelector('.new-message');
+      newMsg.style.animation = 'none';
+      newMsg.style.backgroundColor = 'red';
+      if(button) {
+        button.disabled = true;
+        button.innerText = 'Read';
+      }
+    }
+
+    const readButtons = document.querySelectorAll('.read-btn');
+    readButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const messageBox = button.closest('.message-box');
+        markMessageRead(messageBox, button);
+      });
+    });
+
+    document.getElementById('mark-all').addEventListener('click', () => {
+      const allBoxes = document.querySelectorAll('.message-box');
+      allBoxes.forEach(box => markMessageRead(box));
+      document.getElementById('mark-all').disabled = true;
+      document.getElementById('mark-all').innerText = 'All Read';
+    });
+
+    // Load comments from localStorage
+    function loadComments() {
+      const savedComments = JSON.parse(localStorage.getItem('comments')) || [];
+      const container = document.getElementById('comments-container');
+      container.innerHTML = '';
+      savedComments.forEach(comment => {
+        const div = document.createElement('div');
+        div.classList.add('comment');
+        div.innerHTML = `<strong>${comment.name}:</strong> ${comment.text}`;
+        container.appendChild(div);
+      });
+    }
+
+    // Save comments to localStorage
+    function saveComment(name, text) {
+      const savedComments = JSON.parse(localStorage.getItem('comments')) || [];
+      savedComments.push({ name, text });
+      localStorage.setItem('comments', JSON.stringify(savedComments));
+    }
+
+    // Add new comment
+    document.getElementById('submit-comment').addEventListener('click', () => {
+      const name = document.getElementById('name').value.trim();
+      const commentText = document.getElementById('comment').value.trim();
+      if(name && commentText) {
+        saveComment(name, commentText);
+        loadComments();
+        document.getElementById('name').value = '';
+        document.getElementById('comment').value = '';
+      } else {
+        alert('Please enter both name and comment!');
+      }
+    });
+
+    loadComments();
+  </script>
+</body>
+</html>
